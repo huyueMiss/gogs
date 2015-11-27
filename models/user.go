@@ -145,9 +145,6 @@ func (u *User) DashboardLink() string {
 
 // HomeLink returns the user or organization home page link.
 func (u *User) HomeLink() string {
-	if u.IsOrganization() {
-		return setting.AppSubUrl + "/org/" + u.Name
-	}
 	return setting.AppSubUrl + "/" + u.Name
 }
 
@@ -433,6 +430,7 @@ func CreateUser(u *User) (err error) {
 		return ErrUserAlreadyExist{u.Name}
 	}
 
+	u.Email = strings.ToLower(u.Email)
 	isExist, err = IsEmailUsed(u.Email)
 	if err != nil {
 		return err
